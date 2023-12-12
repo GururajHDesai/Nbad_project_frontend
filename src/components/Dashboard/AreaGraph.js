@@ -1,8 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-import './BarGraph.css';
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+} from 'recharts';
+import './BarGraph.css'; // Assuming this is the correct CSS file for your graph
 
-const BarGraph = ({ username, selectedMonth }) => {
+const AreaGraph = ({ username, selectedMonth }) => {
   const [monthlyData, setMonthlyData] = useState([]);
 
   useEffect(() => {
@@ -11,19 +19,20 @@ const BarGraph = ({ username, selectedMonth }) => {
 
   const fetchMonthlyData = async (username, selectedMonth) => {
     try {
-      const response = await fetch(`http://138.197.82.72:5000/getBudgetsByMonth?username=${username}&month=${selectedMonth}`);
+      const response = await fetch(
+        `http://138.197.82.72:5000/getExpensesByMonth?username=${username}&month=${selectedMonth}`
+      );
       if (!response.ok) {
         throw new Error('Network response was not ok.');
       }
       const data = await response.json();
-      
       setMonthlyData(data);
     } catch (error) {
       console.error('Error fetching monthly data:', error);
     }
   };
 
-  const transformedData = monthlyData.map(item => ({
+  const transformedData = monthlyData.map((item) => ({
     itemType: item.item,
     budget: item.budget || 0,
     capacity: item.capacity || 0,
@@ -31,9 +40,10 @@ const BarGraph = ({ username, selectedMonth }) => {
 
   return (
     <div>
-      <h2>Monthly Capacity vs Budget</h2>
+      <h2 style={{ textAlign: 'center' }}>Monthly Capacity vs Budget (Area Chart)</h2>
+
       {transformedData.length > 0 ? (
-        <BarChart
+        <AreaChart
           width={600}
           height={500}
           data={transformedData}
@@ -44,9 +54,19 @@ const BarGraph = ({ username, selectedMonth }) => {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Bar dataKey="budget" fill="#8884d8" barSize={20} />
-          <Bar dataKey="capacity" fill="#82ca9d" barSize={20} />
-        </BarChart>
+          <Area
+            type="monotone"
+            dataKey="budget"
+            stroke="#8884d8"
+            fill="#8884d8"
+          />
+          <Area
+            type="monotone"
+            dataKey="capacity"
+            stroke="#82ca9d"
+            fill="#82ca9d"
+          />
+        </AreaChart>
       ) : (
         <p>No data available for the selected month.</p>
       )}
@@ -54,4 +74,4 @@ const BarGraph = ({ username, selectedMonth }) => {
   );
 };
 
-export default BarGraph;
+export default AreaGraph;

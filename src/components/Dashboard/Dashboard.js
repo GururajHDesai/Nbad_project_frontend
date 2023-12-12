@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import './Dashboard.css'; 
-import BarGraph from '../Graphs/BarGraph';
-import PieChartComponent from '../Graphs/PieChart';
+import BarGraph from './BarGraph';
+import PieChartComponent from './PieChart';
 import { useNavigate } from 'react-router-dom';
-import ScatterGraph from '../Graphs/ScatterGraph';
+import ScatterGraph from './ScatterGraph';
 
 
 const Dashboard = () => {
@@ -88,7 +88,7 @@ const Dashboard = () => {
       ...formData,
     };
 
-    fetch('http://138.197.82.72:5000/addBudget', {
+    fetch('http://138.197.82.72:5000/addExpense', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -158,7 +158,7 @@ const Dashboard = () => {
 
   const handleShowExpenditure = async () => {
     try {
-      const response = await fetch(`http://138.197.82.72:5000/getBudgetsByMonth?username=${username}&month=${selectedMonth}`);
+      const response = await fetch(`http://138.197.82.72:5000/getExpensesByMonth?username=${username}&month=${selectedMonth}`);
       if (!response.ok) {
         throw new Error('Network response was not ok.');
       }
@@ -197,24 +197,24 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard">
-      <div className="scroll-container">
+      <div className="move-container">
       <div className="dashboard-container">
-        <h1 className="welcome-heading">Welcome, {username ? username : 'Guest'}!</h1>
-        <p className="finance-description">
-          Manage your finances efficiently with our intuitive tools.
+        <h1 className="heading">Hey, {username ? username : 'Guest'}!</h1>
+        <p className="description">
+          Track your expenses...!
         </p>
         <div className={`button-container ${showFields || showCapacityFields || showExpenditure || showGraphs? 'hide-buttons' : ''}`}>
-          <button className="dashboard-button" onClick={handleButtonClick}>
+          <button className="dbutton" onClick={handleButtonClick}>
             Add Expense
           </button>
-          <button className="dashboard-button" onClick={handleCapacityClick}>
+          <button className="dbutton" onClick={handleCapacityClick}>
             Add Capacity
           </button>
-          <button className="dashboard-button" onClick={handleExpenditureClick}>
+          <button className="dbutton" onClick={handleExpenditureClick}>
           Show Expenditure
         </button>
-          <button className="dashboard-button" onClick={handleGraphClick}>Graphs</button>
-          <button className="dashboard-button logout-button" onClick={handleLogout}>
+          <button className="dbutton" onClick={handleGraphClick}>Graphs</button>
+          <button className="dbutton logout-button" onClick={handleLogout}>
             Logout
           </button>
         </div>

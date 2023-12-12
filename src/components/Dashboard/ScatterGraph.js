@@ -21,7 +21,7 @@ const ScatterGraph = ({ username, selectedMonth }) => {
   const fetchMonthlyData = async (username, selectedMonth) => {
     try {
       const response = await fetch(
-        `http://138.197.82.72:5000/getBudgetsByMonth?username=${username}&month=${selectedMonth}`
+        `http://138.197.82.72:5000/getExpensesByMonth?username=${username}&month=${selectedMonth}`
       );
       if (!response.ok) {
         throw new Error('Network response was not ok.');
